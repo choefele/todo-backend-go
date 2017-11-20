@@ -19,7 +19,7 @@ func NewMemoryService() TodoService {
 	})
 }
 
-func (m *memoryService) Create(context context.Context, form TodoForm) (Todo, error) {
+func (m *memoryService) Create(_ context.Context, form TodoForm) (Todo, error) {
 	todo := Todo{
 		ID:    strconv.Itoa(m.id),
 		Title: form.Title,
@@ -30,7 +30,7 @@ func (m *memoryService) Create(context context.Context, form TodoForm) (Todo, er
 	return todo, nil
 }
 
-func (m *memoryService) Todo(context context.Context, id string) (Todo, error) {
+func (m *memoryService) Todo(_ context.Context, id string) (Todo, error) {
 	todo, ok := m.index[id]
 	if !ok {
 		return Todo{}, fmt.Errorf("Invalid index `%v`", id)
@@ -39,7 +39,7 @@ func (m *memoryService) Todo(context context.Context, id string) (Todo, error) {
 	return *todo, nil
 }
 
-func (m *memoryService) Todos(context context.Context) ([]Todo, error) {
+func (m *memoryService) Todos(_ context.Context) ([]Todo, error) {
 	res := []Todo{}
 	for _, todo := range m.list {
 		res = append(res, *todo)
