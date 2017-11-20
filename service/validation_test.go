@@ -7,15 +7,29 @@ import (
 	"github.com/choefele/todo-backend-go/service"
 )
 
-func TestValidationCreateTitleLength(t *testing.T) {
+func TestValidationCreateTitle(t *testing.T) {
 	todoService := service.NewValidation(service.NewMemoryService())
 
-	todoForm := service.TodoForm{
-		Title: strings.Repeat("#", 257),
+	var testCases = []struct {
+		name   string
+		title  string
+		result bool
+	}{
+		{"Length == 256", strings.Repeat("#", 256), true},
+		{"Length > 256", strings.Repeat("#", 257), false},
+		{"Empty string", "", false},
 	}
-	_, err := todoService.Create(nil, todoForm)
 
-	if err == nil {
-		t.Error("Expected validation error")
+	for _, testCase := range testCases {
+		t.Run(testCase.name, func(t *testing.T) {
+			_, err := todoService.Create(nil, service.TodoForm{
+				Title: testCase.title,
+			})
+
+			result := err == nil
+			if result != testCase.result {
+				t.Errorf("Should be %t but was %t", testCase.result, result)
+			}
+		})
 	}
 }

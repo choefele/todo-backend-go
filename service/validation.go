@@ -18,6 +18,9 @@ func NewValidation(next TodoService) TodoService {
 }
 
 func (v *validation) Create(context context.Context, form TodoForm) (Todo, error) {
+	if form.Title == "" {
+		return Todo{}, errors.New("Invalid title (title empty string)")
+	}
 	if utf8.RuneCountInString(form.Title) > 256 {
 		return Todo{}, errors.New("Invalid title (title length > 256)")
 	}
