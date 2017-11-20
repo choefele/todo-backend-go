@@ -23,7 +23,7 @@ func TestCreate(t *testing.T) {
 	}
 }
 
-func TestRetrieve(t *testing.T) {
+func TestTodo(t *testing.T) {
 	todoService := service.NewMemoryService()
 
 	todoCreated, err := todoService.Create(nil, service.TodoForm{
@@ -38,11 +38,25 @@ func TestRetrieve(t *testing.T) {
 	}
 }
 
-func TestRetrieveInvalidID(t *testing.T) {
+func TestTodoInvalidID(t *testing.T) {
 	todoService := service.NewMemoryService()
 
 	_, err := todoService.Todo(nil, "invalid.ID")
 	if err == nil {
 		t.Error("Invalid ID should return error")
+	}
+}
+func TestTodos(t *testing.T) {
+	todoService := service.NewMemoryService()
+
+	todoService.Create(nil, service.TodoForm{})
+	todoService.Create(nil, service.TodoForm{})
+	todoService.Create(nil, service.TodoForm{})
+	todos, err := todoService.Todos(nil)
+	if err != nil {
+		t.Error(err)
+	}
+	if len(todos) != 3 {
+		t.Error("Invalid number of todos")
 	}
 }
