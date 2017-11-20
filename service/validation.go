@@ -10,7 +10,8 @@ type validation struct {
 	TodoService
 }
 
-// NewValidation creates a new TodoService that validates input data.
+// NewValidation creates a new TodoService that forwards validated input data to the
+// next service implementation or returns an error.
 func NewValidation(next TodoService) TodoService {
 	return TodoService(&validation{
 		next,
