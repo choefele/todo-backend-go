@@ -19,9 +19,10 @@ func NewMemoryService() TodoService {
 	})
 }
 
-func (m *memoryService) Create(context context.Context) (Todo, error) {
+func (m *memoryService) Create(context context.Context, form TodoForm) (Todo, error) {
 	todo := Todo{
-		ID: strconv.Itoa(m.id),
+		ID:    strconv.Itoa(m.id),
+		Title: form.Title,
 	}
 	m.list = append(m.list, &todo)
 	m.index[todo.ID] = &todo

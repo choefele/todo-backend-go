@@ -10,27 +10,25 @@ import (
 func TestCreate(t *testing.T) {
 	todoService := service.TodoService(service.NewMemoryService())
 
-	todoCreated, err := todoService.Create(nil)
+	todoForm := service.TodoForm{"title"}
+	todoCreated, err := todoService.Create(nil, todoForm)
 	if err != nil {
 		t.Error(err)
 	}
 	if todoCreated.ID == "" {
 		t.Errorf("Invalid ID `%v`", todoCreated.ID)
 	}
-
-	todoRetrieved, err := todoService.Todo(nil, todoCreated.ID)
-	if err != nil {
-		t.Error(err)
-	}
-	if !reflect.DeepEqual(todoCreated, todoRetrieved) {
-		t.Errorf("Created todo %v not equal to retrieved todo %v", todoCreated, todoRetrieved)
+	if todoCreated.Title != todoForm.Title {
+		t.Error("Invalid property")
 	}
 }
 
 func TestRetrieve(t *testing.T) {
 	todoService := service.TodoService(service.NewMemoryService())
 
-	todoCreated, err := todoService.Create(nil)
+	todoCreated, err := todoService.Create(nil, service.TodoForm{
+		Title: "title",
+	})
 	todoRetrieved, err := todoService.Todo(nil, todoCreated.ID)
 	if err != nil {
 		t.Error(err)
