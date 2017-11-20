@@ -8,23 +8,23 @@ import (
 )
 
 func TestCreate(t *testing.T) {
-	todoService := service.TodoService(service.NewMemoryService())
+	todoService := service.NewMemoryService()
 
-	todoForm := service.TodoForm{"title"}
-	todoCreated, err := todoService.Create(nil, todoForm)
+	form := service.TodoForm{"title"}
+	todo, err := todoService.Create(nil, form)
 	if err != nil {
 		t.Error(err)
 	}
-	if todoCreated.ID == "" {
-		t.Errorf("Invalid ID `%v`", todoCreated.ID)
+	if todo.ID == "" {
+		t.Errorf("Invalid ID `%v`", todo.ID)
 	}
-	if todoCreated.Title != todoForm.Title {
+	if todo.Title != form.Title {
 		t.Error("Invalid property")
 	}
 }
 
 func TestRetrieve(t *testing.T) {
-	todoService := service.TodoService(service.NewMemoryService())
+	todoService := service.NewMemoryService()
 
 	todoCreated, err := todoService.Create(nil, service.TodoForm{
 		Title: "title",
@@ -39,7 +39,7 @@ func TestRetrieve(t *testing.T) {
 }
 
 func TestRetrieveInvalidID(t *testing.T) {
-	todoService := service.TodoService(service.NewMemoryService())
+	todoService := service.NewMemoryService()
 
 	_, err := todoService.Todo(nil, "invalid.ID")
 	if err == nil {
