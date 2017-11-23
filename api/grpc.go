@@ -6,7 +6,6 @@ import (
 	"net"
 
 	"github.com/choefele/todo-backend-go/service"
-	google_protobuf "github.com/golang/protobuf/ptypes/empty"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 )
@@ -31,6 +30,6 @@ func (g *GRPCServer) ListenAndServe(port int) {
 	grpcServer.Serve(lis)
 }
 
-func (g *GRPCServer) Todos(context.Context, *google_protobuf.Empty) (*TodoResponse, error) {
+func (g *GRPCServer) Todos(context.Context, *TodoRequest) (*TodoResponse, error) {
 	return nil, nil
 }

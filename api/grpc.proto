@@ -1,11 +1,12 @@
 syntax = "proto3";
 
-option go_package = "api";
-
-import "google/protobuf/empty.proto";
+package api;
 
 service TodoService {
-    rpc Todos(google.protobuf.Empty) returns (TodoResponse);
+    rpc Todos(TodoRequest) returns (TodoResponse);
+}
+
+message TodoRequest {
 }
 
 message TodoResponse {

@@ -8,6 +8,7 @@ It is generated from these files:
 	grpc.proto
 
 It has these top-level messages:
+	TodoRequest
 	TodoResponse
 	Todo
 */
@@ -16,7 +17,6 @@ package api
 import proto "github.com/golang/protobuf/proto"
 import fmt "fmt"
 import math "math"
-import google_protobuf "github.com/golang/protobuf/ptypes/empty"
 
 import (
 	context "golang.org/x/net/context"
@@ -34,6 +34,14 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
+type TodoRequest struct {
+}
+
+func (m *TodoRequest) Reset()                    { *m = TodoRequest{} }
+func (m *TodoRequest) String() string            { return proto.CompactTextString(m) }
+func (*TodoRequest) ProtoMessage()               {}
+func (*TodoRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{0} }
+
 type TodoResponse struct {
 	Todos []*Todo `protobuf:"bytes,1,rep,name=todos" json:"todos,omitempty"`
 }
@@ -41,7 +49,7 @@ type TodoResponse struct {
 func (m *TodoResponse) Reset()                    { *m = TodoResponse{} }
 func (m *TodoResponse) String() string            { return proto.CompactTextString(m) }
 func (*TodoResponse) ProtoMessage()               {}
-func (*TodoResponse) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{0} }
+func (*TodoResponse) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{1} }
 
 func (m *TodoResponse) GetTodos() []*Todo {
 	if m != nil {
@@ -58,7 +66,7 @@ type Todo struct {
 func (m *Todo) Reset()                    { *m = Todo{} }
 func (m *Todo) String() string            { return proto.CompactTextString(m) }
 func (*Todo) ProtoMessage()               {}
-func (*Todo) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{1} }
+func (*Todo) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{2} }
 
 func (m *Todo) GetId() string {
 	if m != nil {
@@ -75,8 +83,9 @@ func (m *Todo) GetTitle() string {
 }
 
 func init() {
-	proto.RegisterType((*TodoResponse)(nil), "TodoResponse")
-	proto.RegisterType((*Todo)(nil), "Todo")
+	proto.RegisterType((*TodoRequest)(nil), "api.TodoRequest")
+	proto.RegisterType((*TodoResponse)(nil), "api.TodoResponse")
+	proto.RegisterType((*Todo)(nil), "api.Todo")
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -90,7 +99,7 @@ const _ = grpc.SupportPackageIsVersion4
 // Client API for TodoService service
 
 type TodoServiceClient interface {
-	Todos(ctx context.Context, in *google_protobuf.Empty, opts ...grpc.CallOption) (*TodoResponse, error)
+	Todos(ctx context.Context, in *TodoRequest, opts ...grpc.CallOption) (*TodoResponse, error)
 }
 
 type todoServiceClient struct {
@@ -101,9 +110,9 @@ func NewTodoServiceClient(cc *grpc.ClientConn) TodoServiceClient {
 	return &todoServiceClient{cc}
 }
 
-func (c *todoServiceClient) Todos(ctx context.Context, in *google_protobuf.Empty, opts ...grpc.CallOption) (*TodoResponse, error) {
+func (c *todoServiceClient) Todos(ctx context.Context, in *TodoRequest, opts ...grpc.CallOption) (*TodoResponse, error) {
 	out := new(TodoResponse)
-	err := grpc.Invoke(ctx, "/TodoService/Todos", in, out, c.cc, opts...)
+	err := grpc.Invoke(ctx, "/api.TodoService/Todos", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -113,7 +122,7 @@ func (c *todoServiceClient) Todos(ctx context.Context, in *google_protobuf.Empty
 // Server API for TodoService service
 
 type TodoServiceServer interface {
-	Todos(context.Context, *google_protobuf.Empty) (*TodoResponse, error)
+	Todos(context.Context, *TodoRequest) (*TodoResponse, error)
 }
 
 func RegisterTodoServiceServer(s *grpc.Server, srv TodoServiceServer) {
@@ -121,7 +130,7 @@ func RegisterTodoServiceServer(s *grpc.Server, srv TodoServiceServer) {
 }
 
 func _TodoService_Todos_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(google_protobuf.Empty)
+	in := new(TodoRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -130,16 +139,16 @@ func _TodoService_Todos_Handler(srv interface{}, ctx context.Context, dec func(i
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/TodoService/Todos",
+		FullMethod: "/api.TodoService/Todos",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TodoServiceServer).Todos(ctx, req.(*google_protobuf.Empty))
+		return srv.(TodoServiceServer).Todos(ctx, req.(*TodoRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 var _TodoService_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "TodoService",
+	ServiceName: "api.TodoService",
 	HandlerType: (*TodoServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -154,17 +163,16 @@ var _TodoService_serviceDesc = grpc.ServiceDesc{
 func init() { proto.RegisterFile("grpc.proto", fileDescriptor0) }
 
 var fileDescriptor0 = []byte{
-	// 182 bytes of a gzipped FileDescriptorProto
+	// 166 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x4a, 0x2f, 0x2a, 0x48,
-	0xd6, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x97, 0x92, 0x4e, 0xcf, 0xcf, 0x4f, 0xcf, 0x49, 0xd5, 0x07,
-	0xf3, 0x92, 0x4a, 0xd3, 0xf4, 0x53, 0x73, 0x0b, 0x4a, 0x2a, 0x21, 0x92, 0x4a, 0xda, 0x5c, 0x3c,
-	0x21, 0xf9, 0x29, 0xf9, 0x41, 0xa9, 0xc5, 0x05, 0xf9, 0x79, 0xc5, 0xa9, 0x42, 0xd2, 0x5c, 0xac,
-	0x25, 0xf9, 0x29, 0xf9, 0xc5, 0x12, 0x8c, 0x0a, 0xcc, 0x1a, 0xdc, 0x46, 0xac, 0x7a, 0x60, 0x59,
-	0x88, 0x98, 0x92, 0x0e, 0x17, 0x0b, 0x88, 0x2b, 0xc4, 0xc7, 0xc5, 0x94, 0x99, 0x22, 0xc1, 0xa8,
-	0xc0, 0xa8, 0xc1, 0x19, 0xc4, 0x94, 0x99, 0x22, 0x24, 0xc2, 0xc5, 0x5a, 0x92, 0x59, 0x92, 0x93,
-	0x2a, 0xc1, 0x04, 0x16, 0x82, 0x70, 0x8c, 0x6c, 0xb9, 0xb8, 0x41, 0xaa, 0x83, 0x53, 0x8b, 0xca,
-	0x32, 0x93, 0x53, 0x85, 0xf4, 0xb8, 0x58, 0x41, 0xdc, 0x62, 0x21, 0x31, 0x3d, 0x88, 0x83, 0xf4,
-	0x60, 0x0e, 0xd2, 0x73, 0x05, 0x39, 0x48, 0x8a, 0x57, 0x0f, 0xd9, 0x25, 0x4e, 0xac, 0x51, 0xcc,
-	0x89, 0x05, 0x99, 0x49, 0x6c, 0x60, 0x55, 0xc6, 0x80, 0x00, 0x00, 0x00, 0xff, 0xff, 0xc3, 0xb4,
-	0x40, 0xe7, 0xd2, 0x00, 0x00, 0x00,
+	0xd6, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x4e, 0x2c, 0xc8, 0x54, 0xe2, 0xe5, 0xe2, 0x0e,
+	0xc9, 0x4f, 0xc9, 0x0f, 0x4a, 0x2d, 0x2c, 0x4d, 0x2d, 0x2e, 0x51, 0xd2, 0xe7, 0xe2, 0x81, 0x70,
+	0x8b, 0x0b, 0xf2, 0xf3, 0x8a, 0x53, 0x85, 0xe4, 0xb9, 0x58, 0x4b, 0xf2, 0x53, 0xf2, 0x8b, 0x25,
+	0x18, 0x15, 0x98, 0x35, 0xb8, 0x8d, 0x38, 0xf5, 0x12, 0x0b, 0x32, 0xf5, 0xc0, 0x2a, 0x20, 0xe2,
+	0x4a, 0x3a, 0x5c, 0x2c, 0x20, 0xae, 0x10, 0x1f, 0x17, 0x53, 0x66, 0x8a, 0x04, 0xa3, 0x02, 0xa3,
+	0x06, 0x67, 0x10, 0x53, 0x66, 0x8a, 0x90, 0x08, 0x17, 0x6b, 0x49, 0x66, 0x49, 0x4e, 0xaa, 0x04,
+	0x13, 0x58, 0x08, 0xc2, 0x31, 0xb2, 0x86, 0xd8, 0x16, 0x9c, 0x5a, 0x54, 0x96, 0x99, 0x9c, 0x2a,
+	0xa4, 0xc3, 0xc5, 0x0a, 0xe2, 0x16, 0x0b, 0x09, 0x20, 0xcc, 0x85, 0x38, 0x44, 0x4a, 0x10, 0x49,
+	0x04, 0xe2, 0x96, 0x24, 0x36, 0xb0, 0xb3, 0x8d, 0x01, 0x01, 0x00, 0x00, 0xff, 0xff, 0x10, 0x94,
+	0x41, 0xe1, 0xc4, 0x00, 0x00, 0x00,
 }
