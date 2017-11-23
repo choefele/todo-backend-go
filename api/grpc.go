@@ -30,6 +30,21 @@ func (g *GRPCServer) ListenAndServe(port int) {
 	grpcServer.Serve(lis)
 }
 
-func (g *GRPCServer) Todos(context.Context, *TodoRequest) (*TodoResponse, error) {
-	return nil, nil
+func (g *GRPCServer) Todos(context context.Context, _ *TodoRequest) (*TodoResponse, error) {
+	todos, err := g.service.Todos(context)
+	if err != nil {
+		return nil, err
+	}
+
+	todoGRPC := []*Todo{}
+	for _, t := range todos {
+		todoGRPC = append(todoGRPC, &Todo{
+			Id:    t.ID,
+			Title: t.Title,
+		})
+	}
+	todoResponse := TodoResponse{
+		Todos: todoGRPC,
+	}
+	return &todoResponse, nil
 }
