@@ -1,14 +1,15 @@
-package service_test
+package repository_test
 
 import (
 	"reflect"
 	"testing"
 
+	"github.com/choefele/todo-backend-go/repository"
 	"github.com/choefele/todo-backend-go/service"
 )
 
 func TestCreate(t *testing.T) {
-	todoService := service.NewMemoryService()
+	todoService := repository.NewMemoryService()
 
 	form := service.TodoForm{"title"}
 	todo, err := todoService.Create(nil, form)
@@ -24,7 +25,7 @@ func TestCreate(t *testing.T) {
 }
 
 func TestTodo(t *testing.T) {
-	todoService := service.NewMemoryService()
+	todoService := repository.NewMemoryService()
 
 	todoCreated, err := todoService.Create(nil, service.TodoForm{
 		Title: "title",
@@ -39,7 +40,7 @@ func TestTodo(t *testing.T) {
 }
 
 func TestTodoInvalidID(t *testing.T) {
-	todoService := service.NewMemoryService()
+	todoService := repository.NewMemoryService()
 
 	_, err := todoService.Todo(nil, "invalid.ID")
 	if err == nil {
@@ -47,7 +48,7 @@ func TestTodoInvalidID(t *testing.T) {
 	}
 }
 func TestTodos(t *testing.T) {
-	todoService := service.NewMemoryService()
+	todoService := repository.NewMemoryService()
 
 	todoService.Create(nil, service.TodoForm{})
 	todoService.Create(nil, service.TodoForm{})

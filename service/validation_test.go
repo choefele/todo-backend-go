@@ -4,11 +4,12 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/choefele/todo-backend-go/repository"
 	"github.com/choefele/todo-backend-go/service"
 )
 
 func TestValidationCreateTitle(t *testing.T) {
-	todoService := service.NewValidation(service.NewMemoryService())
+	todoService := service.NewValidation(repository.NewMemoryService())
 
 	var testCases = []struct {
 		name   string

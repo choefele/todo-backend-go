@@ -1,3 +1,3 @@
 #!/bin/bash
 
-protoc -I api/ api/grpc.proto --go_out=plugins=grpc:api
+protoc -I transport/ transport/grpc.proto --go_out=plugins=grpc:transport
