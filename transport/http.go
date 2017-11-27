@@ -28,6 +28,10 @@ func (h *HTTPServer) ListenAndServe(root string, port int) {
 }
 
 func (h *HTTPServer) todos(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "GET" {
+		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
+	}
+
 	todos, err := h.service.Todos(r.Context())
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
