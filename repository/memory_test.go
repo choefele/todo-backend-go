@@ -11,7 +11,9 @@ import (
 func TestCreate(t *testing.T) {
 	todoService := repository.NewMemoryService()
 
-	form := service.TodoForm{"title"}
+	form := service.TodoForm{
+		Title: "title",
+	}
 	todo, err := todoService.Create(nil, form)
 	if err != nil {
 		t.Error(err)
