@@ -7,6 +7,24 @@ import (
 	"github.com/choefele/todo-backend-go/transport"
 )
 
+func TestCreate(t *testing.T) {
+	todoService := repository.NewMemoryService()
+	server := transport.NewGRPCServer(todoService)
+
+	request := transport.CreateRequest{
+		Title: "title",
+	}
+	response, err := server.Create(nil, &request)
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	if request.Title != response.Todo.Title {
+		t.Errorf("Expected %v but received %v", request.Title, response.Todo.Title)
+	}
+}
+
 func TestTodos(t *testing.T) {
 	todoService := repository.NewMemoryService()
 	server := transport.NewGRPCServer(todoService)

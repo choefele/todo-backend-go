@@ -30,8 +30,25 @@ func (g *GRPCServer) ListenAndServe(port int) {
 	grpcServer.Serve(lis)
 }
 
-func (g *GRPCServer) Todos(context context.Context, _ *TodoRequest) (*TodoResponse, error) {
-	todos, err := g.service.Todos(context)
+func (g *GRPCServer) Create(ctx context.Context, in *CreateRequest) (*CreateResponse, error) {
+	form := service.TodoForm{
+		Title: in.Title,
+	}
+	todo, err := g.service.Create(ctx, form)
+	if err != nil {
+		return nil, err
+	}
+
+	return &CreateResponse{
+		Todo: &Todo{
+			Id:    todo.ID,
+			Title: todo.Title,
+		},
+	}, nil
+}
+
+func (g *GRPCServer) Todos(ctx context.Context, _ *TodoRequest) (*TodoResponse, error) {
+	todos, err := g.service.Todos(ctx)
 	if err != nil {
 		return nil, err
 	}

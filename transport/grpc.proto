@@ -3,7 +3,16 @@ syntax = "proto3";
 package transport;
 
 service TodoService {
+    rpc Create(CreateRequest) returns (CreateResponse);
     rpc Todos(TodoRequest) returns (TodoResponse);
+}
+
+message CreateRequest {
+    string title = 1;
+}
+
+message CreateResponse {
+    Todo todo = 1;
 }
 
 message TodoRequest {
