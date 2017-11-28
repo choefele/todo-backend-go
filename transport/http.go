@@ -1,6 +1,7 @@
 package transport
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -26,6 +27,11 @@ func (h *HTTPServer) ListenAndServe(root string, port int) {
 	mux.HandleFunc(root+"/todo", h.create)
 
 	http.ListenAndServe(":"+strconv.Itoa(port), mux)
+}
+
+type todo struct {
+	ID    string `json:"id,omitempty"`
+	Title string `json:"title,omitempty"`
 }
 
 func (h *HTTPServer) create(w http.ResponseWriter, r *http.Request) {
@@ -59,6 +65,13 @@ func (h *HTTPServer) todos(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	body := fmt.Sprintf("Todos: %v", todos)
-	io.WriteString(w, body)
+	todosHTTP := []todo{}
+	for _, t := range todos {
+		todosHTTP = append(todosHTTP, todo{
+			ID:    t.ID,
+			Title: t.Title,
+		})
+	}
+
+	json.NewEncoder(w).Encode(todosHTTP)
 }

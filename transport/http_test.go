@@ -21,8 +21,8 @@ func TestTodos(t *testing.T) {
 		t.Errorf("Should return %v but was %v", http.StatusOK, w.Code)
 	}
 
-	expected := []byte(`Todos: []`)
+	expected := []byte("[]\n")
 	if !bytes.Equal(w.Body.Bytes(), expected) {
-		t.Errorf("Body should be `%s` but was %v", w.Body.Bytes(), expected)
+		t.Errorf("Body should be `%s` but was `%s`", expected, w.Body.Bytes())
 	}
 }
