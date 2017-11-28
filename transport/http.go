@@ -2,8 +2,6 @@ package transport
 
 import (
 	"encoding/json"
-	"fmt"
-	"io"
 	"net/http"
 	"strconv"
 
@@ -43,14 +41,17 @@ func (h *HTTPServer) create(w http.ResponseWriter, r *http.Request) {
 	form := service.TodoForm{
 		Title: "title",
 	}
-	todo, err := h.service.Create(r.Context(), form)
+	t, err := h.service.Create(r.Context(), form)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
 
-	body := fmt.Sprintf("Todo: %v", todo)
-	io.WriteString(w, body)
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(todo{
+		ID:    t.ID,
+		Title: t.Title,
+	})
 }
 
 func (h *HTTPServer) todos(w http.ResponseWriter, r *http.Request) {
