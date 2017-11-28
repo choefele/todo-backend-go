@@ -13,7 +13,8 @@ func TestTodosPOST(t *testing.T) {
 	todoService := repository.NewMemoryService()
 	server := NewHTTPServer(todoService)
 
-	req, _ := http.NewRequest("POST", "", nil)
+	json := []byte(`{"title":"title"}`)
+	req, _ := http.NewRequest("POST", "", bytes.NewBuffer(json))
 	w := httptest.NewRecorder()
 	server.todosHandler(w, req)
 

@@ -31,6 +31,10 @@ type todo struct {
 	Title string `json:"title,omitempty"`
 }
 
+type todoForm struct {
+	Title string `json:"title,omitempty"`
+}
+
 func (h *HTTPServer) todosHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		h.todos(w, r)
@@ -44,10 +48,16 @@ func (h *HTTPServer) todosHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *HTTPServer) create(w http.ResponseWriter, r *http.Request) {
-	form := service.TodoForm{
-		Title: "title",
+	decoder := json.NewDecoder(r.Body)
+	var form todoForm
+	err := decoder.Decode(&form)
+	if err != nil {
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 	}
-	t, err := h.service.Create(r.Context(), form)
+
+	t, err := h.service.Create(r.Context(), service.TodoForm{
+		Title: form.Title,
+	})
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
