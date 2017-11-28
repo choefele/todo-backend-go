@@ -53,15 +53,15 @@ func (g *GRPCServer) Todos(ctx context.Context, _ *TodoRequest) (*TodoResponse, 
 		return nil, err
 	}
 
-	todoGRPC := []*Todo{}
+	todosGRPC := []*Todo{}
 	for _, t := range todos {
-		todoGRPC = append(todoGRPC, &Todo{
+		todosGRPC = append(todosGRPC, &Todo{
 			Id:    t.ID,
 			Title: t.Title,
 		})
 	}
 	todoResponse := TodoResponse{
-		Todos: todoGRPC,
+		Todos: todosGRPC,
 	}
 	return &todoResponse, nil
 }
