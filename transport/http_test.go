@@ -9,13 +9,13 @@ import (
 	"github.com/choefele/todo-backend-go/repository"
 )
 
-func TestCreate(t *testing.T) {
+func TestTodosPOST(t *testing.T) {
 	todoService := repository.NewMemoryService()
 	server := NewHTTPServer(todoService)
 
 	req, _ := http.NewRequest("POST", "", nil)
 	w := httptest.NewRecorder()
-	server.create(w, req)
+	server.todosHandler(w, req)
 
 	if w.Code != http.StatusCreated {
 		t.Errorf("Status code should be %v but was %v", http.StatusOK, w.Code)
@@ -27,13 +27,13 @@ func TestCreate(t *testing.T) {
 	}
 }
 
-func TestTodos(t *testing.T) {
+func TestTodosGET(t *testing.T) {
 	todoService := repository.NewMemoryService()
 	server := NewHTTPServer(todoService)
 
 	req, _ := http.NewRequest("GET", "", nil)
 	w := httptest.NewRecorder()
-	server.todos(w, req)
+	server.todosHandler(w, req)
 
 	if w.Code != http.StatusOK {
 		t.Errorf("Status code should be %v but was %v", http.StatusOK, w.Code)
