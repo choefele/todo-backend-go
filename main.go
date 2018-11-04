@@ -12,7 +12,8 @@ const httpPort = 8080
 const grpcPort = 8888
 
 func main() {
-	todoService := repository.NewMemoryService()
+	// todoService := repository.NewMemoryService()
+	todoService := repository.NewMongoService()
 	todoService = service.NewValidation(todoService)
 
 	go func() {
