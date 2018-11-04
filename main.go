@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/choefele/todo-backend-go/repository"
 	"github.com/choefele/todo-backend-go/service"
@@ -10,10 +11,15 @@ import (
 
 const httpPort = 8080
 const grpcPort = 8888
+const mongoConnection = "localhost:32769"
 
 func main() {
 	// todoService := repository.NewMemoryService()
-	todoService := repository.NewMongoService()
+	todoService, err := repository.NewMongoService(mongoConnection)
+	if err != nil {
+		fmt.Printf("DB connection error %v\n", err)
+		os.Exit(-1)
+	}
 	todoService = service.NewValidation(todoService)
 
 	go func() {
